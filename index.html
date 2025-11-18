@@ -46,7 +46,7 @@
       background-color: blue;
       cursor: pointer;
       font-size: 16px;
-	  width: 90%;
+      width: 90%;
       transition: opacity 0.3s ease;
     }
     .relay-card button:hover {
@@ -68,79 +68,8 @@
     #allOffBtn {
       background-color: #d32f2f;
     }
-    #allOffBtn:hover {
-      opacity: 0.8;
-    }
     #logoutBtn {
       background-color: #555;
-    }
-    #logoutBtn:hover {
-      opacity: 0.8;
-    }
-
-    /* Responsive layout */
-    #dashboard {
-      display: none;
-    }
-    #loginForm {
-      max-width: 400px;
-      margin: 80px auto 20px;
-      background: white;
-      padding: 30px 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    #loginForm input {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0 20px;
-      font-size: 1rem;
-      border: 1.5px solid #ccc;
-      border-radius: 10px;
-      box-sizing: border-box;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
-    }
-    #loginForm input:focus {
-      border-color: #1e88e5;
-    }
-    #loginForm button {
-      width: 100%;
-      background-color: #1e88e5;
-      color: white;
-      padding: 12px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    #loginForm button:hover {
-      background-color: #1565c0;
-    }
-    #dashboard .relay-container {
-      max-width: 960px;
-      margin: 20px auto 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    /* Smaller devices */
-    @media (max-width: 700px) {
-      .relay-card {
-        width: 90%;
-        margin: 10px auto;
-        display: block;
-      }
-      body {
-        padding: 0 10px 60px;
-      }
-    }
-    footer {
-      font-size: 0.9rem;
-      color: #666;
-      padding: 10px 0;
-      margin-top: 40px;
     }
   </style>
 </head>
@@ -156,8 +85,9 @@
   </div>
 
   <!-- Dashboard -->
-  <div id="dashboard">
+  <div id="dashboard" style="display:none;">
     <div class="relay-container">
+
       <div class="relay-card">
         <h2>Relay 1</h2>
         <p>Status: <span id="status1">Loading...</span></p>
@@ -176,7 +106,6 @@
         <button id="btn3">Toggle</button>
       </div>
 
-      
     </div>
 
     <button id="allOffBtn">All OFF</button>
@@ -193,49 +122,37 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
-  apiKey: "AIzaSyA8WPM160V3Os0lya3eur4YvDPJAah_aLs",
-  authDomain: "home-automation-appliances.firebaseapp.com",
-  databaseURL: "https://home-automation-appliances-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "home-automation-appliances",
-  storageBucket: "home-automation-appliances.firebasestorage.app",
-  messagingSenderId: "917710504778",
-  appId: "1:917710504778:web:8d6209b7a44cf3bfb5f7b3",
-  measurementId: "G-KDGCVXBM95"
-};
+      apiKey: "AIzaSyA8WPM160V3Os0lya3eur4YvDPJAah_aLs",
+      authDomain: "home-automation-appliances.firebaseapp.com",
+      databaseURL: "https://home-automation-appliances-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "home-automation-appliances",
+      storageBucket: "home-automation-appliances.firebasestorage.app",
+      messagingSenderId: "917710504778",
+      appId: "1:917710504778:web:8d6209b7a44cf3bfb5f7b3",
+      measurementId: "G-KDGCVXBM95"
+    };
+
     firebase.initializeApp(firebaseConfig);
 
-    // Predefined login credentials (can be replaced with your logic)
     const allowedEmail = "shoaibimran9381@gmail.com";
     const allowedPassword = "Shoaibind@123";
 
     const loginForm = document.getElementById("loginForm");
     const dashboard = document.getElementById("dashboard");
-    const loginBtn = document.getElementById("loginBtn");
 
-    loginBtn.addEventListener("click", () => {
+    document.getElementById("loginBtn").addEventListener("click", () => {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      if (!email || !password) {
-        alert("Please enter email and password.");
-        return;
-      }
-
-      // Check hardcoded credentials first
-      if(email === allowedEmail && password === allowedPassword){
-        // Sign in with Firebase
+      if (email === allowedEmail && password === allowedPassword) {
         firebase.auth().signInWithEmailAndPassword(email, password)
-          .then(userCredential => {
-            console.log("Signed in as", userCredential.user.email);
+          .then(() => {
             loginForm.style.display = "none";
             dashboard.style.display = "block";
             startRelayControl();
           })
-          .catch(error => {
-            alert("Firebase login failed: " + error.message);
-          });
+          .catch(error => alert("Firebase login failed: " + error.message));
       } else {
         alert("Invalid email or password.");
       }
@@ -247,8 +164,7 @@
       const relays = [
         { id: 1, path: "relay1" },
         { id: 2, path: "relay2" },
-        { id: 3, path: "relay3" },
-        { id: 4, path: "relay4" },
+        { id: 3, path: "relay3" }
       ];
 
       relays.forEach(relay => {
@@ -256,38 +172,26 @@
         const toggleButton = document.getElementById(`btn${relay.id}`);
         const relayRef = db.ref("/" + relay.path);
 
-        relayRef.on("value", (snapshot) => {
-          const state = snapshot.val();
+        relayRef.on("value", snap => {
+          const state = snap.val();
           statusText.innerText = state ? "ON" : "OFF";
           toggleButton.style.backgroundColor = state ? "green" : "blue";
         });
 
         toggleButton.onclick = () => {
-          relayRef.get().then(snap => {
-            relayRef.set(!snap.val());
-          });
+          relayRef.get().then(snap => relayRef.set(!snap.val()));
         };
       });
 
       document.getElementById("allOffBtn").onclick = () => {
-        relays.forEach(relay => {
-          db.ref("/" + relay.path).set(false);
-        });
+        relays.forEach(relay => db.ref("/" + relay.path).set(false));
       };
     }
 
     document.getElementById("logoutBtn").onclick = () => {
-      firebase.auth().signOut()
-        .then(() => {
-          dashboard.style.display = "none";
-          loginForm.style.display = "block";
-          document.getElementById("email").value = "";
-          document.getElementById("password").value = "";
-        })
-        .catch(error => {
-          alert("Logout failed: " + error.message);
-        });
+      firebase.auth().signOut().then(() => location.reload());
     };
   </script>
+
 </body>
 </html>
