@@ -75,7 +75,8 @@
 </head>
 <body>
 
-  <h1>ESP32 Relay Control Dashboard</h1>
+  <!-- CHANGED TITLE -->
+  <h1>HOME APPLIANCES</h1>
 
   <!-- Login form -->
   <div id="loginForm">
@@ -152,7 +153,7 @@
             dashboard.style.display = "block";
             startRelayControl();
           })
-          .catch(error => alert("Firebase login failed: " + error.message));
+          .catch(error => alert("Firebase login failed: " + (error.message || error.code)));
       } else {
         alert("Invalid email or password.");
       }
@@ -195,4 +196,3 @@
 
 </body>
 </html>
-
