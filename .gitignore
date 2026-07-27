@@ -1,25 +1,15 @@
-# macOS
-.DS_Store
-**/.DS_Store
-
-# Android / Gradle
-.gradle/
-**/build/
-**/captures/
-**/.idea/
 *.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
 local.properties
-*.apk
-*.aab
-
-# VS Code
-.vscode/
-
-# Arduino / PlatformIO
-*.bin
-*.elf
-*.hex
-*.zip
-
-# Logs
-*.log
