@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Android / Gradle
+.gradle/
+**/build/
+**/captures/
+**/.idea/
+*.iml
+local.properties
+*.apk
+*.aab
+
+# VS Code
+.vscode/
+
+# Arduino / PlatformIO
+*.bin
+*.elf
+*.hex
+*.zip
+
+# Logs
+*.log
